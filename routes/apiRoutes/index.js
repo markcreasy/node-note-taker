@@ -1,8 +1,7 @@
 const router = require('express').Router();
 const fs = require('fs');
 const path = require('path');
-// const {filterByQuery, findById, createNewAnimal, validateAnimal} = require('../../lib/animals.js');
-const { notes } = require('../../db/db');
+let { notes } = require('../../db/db');
 
 router.get('/notes', (req, res) => {
   let results = notes;
@@ -22,12 +21,12 @@ router.get('/notes/:id', (req, res) => {
 router.post('/notes', (req, res) => {
 
   // create new note object
-  let newNote =  { "id": notes.length, "title": req.body.title, "text": req.body.text};
+  let newNote =  { "id": 0, "title": req.body.title, "text": req.body.text};
 
   // assign a new id, making sure not to set a conflicting value
   notes.forEach((note, i) => {
-    if(note.id > newNote.id){
-      newNote.id = note.id++;
+    if(newNote.id <= note.id){
+      newNote.id = note.id + 1;
     }
   });
 
@@ -47,6 +46,11 @@ router.post('/notes', (req, res) => {
     // respond with the note array as json
     res.json(notes);
   }
+});
+
+router.post('/notes/delete/:id', (req, res) => {
+  notes = notes.filter(note => note.id != req.params.id);
+  res.json(notes);
 });
 
 module.exports  = router;
