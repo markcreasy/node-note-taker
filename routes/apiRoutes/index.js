@@ -48,8 +48,12 @@ router.post('/notes', (req, res) => {
   }
 });
 
-router.post('/notes/delete/:id', (req, res) => {
+router.delete('/notes/:id', (req, res) => {
   notes = notes.filter(note => note.id != req.params.id);
+  fs.writeFileSync(
+    path.join(__dirname, '../../db/db.json'),
+    JSON.stringify({ notes: notes }, null, 2)
+  );
   res.json(notes);
 });
 
