@@ -9,15 +9,16 @@ router.get('/notes', (req, res) => {
   res.json(results);
 });
 
-// router.get('/notes/:id', (req, res) => {
-//   const result = findById(req.params.id, notes);
-//   if (result) {
-//     res.json(result);
-//   } else {
-//     res.send(404);
-//   }
-// });
-//
+router.get('/notes/:id', (req, res) => {
+  // filter notes array for id (req.params.id)
+  const result = notes.filter(note => note.id === req.params.id)[0];
+  if (result) {
+    res.json(result);
+  } else {
+    res.send(404);
+  }
+});
+
 router.post('/notes', (req, res) => {
 
   // create new note object
